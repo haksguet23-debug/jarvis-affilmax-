@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JARVIS IA + AffilMax — Automatise ta vie, génère des revenus</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --cyan:#00d4ff;--cyan2:#00aaff;--green:#00ff88;--orange:#ffaa00;--red:#ff6644;
+  --bg:#000d1a;--bg2:#001828;--bg3:#002240;
+}
+body{background:var(--bg);color:#cceeff;font-family:'Share Tech Mono',monospace;overflow-x:hidden;}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+@keyframes spinR{from{transform:rotate(0)}to{transform:rotate(-360deg)}}
+@keyframes glow{0%,100%{box-shadow:0 0 20px var(--cyan),0 0 40px var(--cyan)33}50%{box-shadow:0 0 40px var(--cyan),0 0 80px var(--cyan)55}}
+@keyframes pulse{0%,100%{opacity:.6}50%{opacity:1}}
+@keyframes scan{0%{top:-2px;opacity:0}5%{opacity:.4}95%{opacity:.4}100%{top:100%;opacity:0}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes typewriter{from{width:0}to{width:100%}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+/* HEX BG */
+.hexbg{position:fixed;inset:0;opacity:.04;pointer-events:none;z-index:0;}
+
+/* SCANLINE */
+.scanline{position:fixed;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan)44,var(--cyan)66,var(--cyan)44,transparent);animation:scan 6s linear infinite;pointer-events:none;z-index:99;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:12px 40px;display:flex;justify-content:space-between;align-items:center;background:var(--bg)ee;border-bottom:1px solid var(--cyan)22;backdrop-filter:blur(10px);}
+.nav-logo{font-family:'Orbitron',monospace;font-size:18px;font-weight:900;color:var(--cyan);letter-spacing:4px;text-shadow:0 0 20px var(--cyan);}
+.nav-links{display:flex;gap:24px;}
+.nav-links a{color:var(--cyan)88;text-decoration:none;font-size:11px;letter-spacing:2px;transition:.2s;}
+.nav-links a:hover{color:var(--cyan);}
+.nav-cta{background:linear-gradient(135deg,#003355,#005580);border:1px solid var(--cyan)55;color:var(--cyan);padding:8px 20px;font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:2px;cursor:pointer;transition:.2s;}
+.nav-cta:hover{background:var(--cyan)22;box-shadow:0 0 20px var(--cyan)33;}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 20px 80px;position:relative;overflow:hidden;}
+.hero-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;background:radial-gradient(circle,var(--cyan)08 0%,transparent 70%);pointer-events:none;}
+
+/* ARC REACTOR */
+.arc{position:relative;width:120px;height:120px;margin:0 auto 40px;}
+.arc-ring{position:absolute;border-radius:50%;}
+.arc-r1{inset:0;border:2px solid var(--cyan)44;animation:spin 8s linear infinite;}
+.arc-r2{inset:8px;border:1px solid var(--cyan)66;animation:spinR 5s linear infinite;}
+.arc-r3{inset:16px;border:2px solid var(--cyan);animation:spin 3s linear infinite;}
+.arc-r4{inset:24px;border:1px dashed var(--cyan)44;animation:spinR 2s linear infinite;}
+.arc-core{position:absolute;inset:34px;border-radius:50%;background:radial-gradient(circle,var(--cyan) 0%,#0066aa 50%,var(--bg) 100%);animation:glow 2s ease-in-out infinite;display:flex;align-items:center;justify-content:center;}
+.arc-dot{width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 0 15px #fff,0 0 30px var(--cyan);}
+
+.hero-badge{font-size:10px;letter-spacing:4px;color:var(--cyan)66;margin-bottom:16px;animation:fadeUp .6s ease;}
+.hero-title{font-family:'Orbitron',monospace;font-size:clamp(32px,6vw,72px);font-weight:900;line-height:1.1;margin-bottom:20px;animation:fadeUp .8s ease;}
+.hero-title span{color:var(--cyan);text-shadow:0 0 30px var(--cyan);}
+.hero-sub{font-size:14px;color:#aaccee;max-width:600px;line-height:1.8;margin-bottom:40px;animation:fadeUp 1s ease;}
+.hero-btns{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;animation:fadeUp 1.2s ease;}
+.btn-primary{background:linear-gradient(135deg,var(--cyan)33,var(--cyan)55);border:1px solid var(--cyan);color:var(--cyan);padding:14px 32px;font-family:'Share Tech Mono',monospace;font-size:12px;letter-spacing:3px;cursor:pointer;transition:.3s;text-decoration:none;display:inline-block;}
+.btn-primary:hover{background:var(--cyan);color:var(--bg);box-shadow:0 0 30px var(--cyan)55;}
+.btn-secondary{background:transparent;border:1px solid var(--cyan)44;color:var(--cyan)88;padding:14px 32px;font-family:'Share Tech Mono',monospace;font-size:12px;letter-spacing:3px;cursor:pointer;transition:.3s;text-decoration:none;display:inline-block;}
+.btn-secondary:hover{border-color:var(--cyan);color:var(--cyan);}
+
+.hero-stats{display:flex;gap:40px;margin-top:60px;flex-wrap:wrap;justify-content:center;animation:fadeUp 1.4s ease;}
+.stat{text-align:center;}
+.stat-num{font-family:'Orbitron',monospace;font-size:32px;font-weight:900;color:var(--cyan);}
+.stat-label{font-size:9px;color:var(--cyan)66;letter-spacing:3px;margin-top:4px;}
+
+/* SECTION */
+section{padding:80px 20px;position:relative;z-index:1;}
+.container{max-width:1100px;margin:0 auto;}
+.section-tag{font-size:9px;letter-spacing:4px;color:var(--cyan)66;text-align:center;margin-bottom:12px;}
+.section-title{font-family:'Orbitron',monospace;font-size:clamp(20px,4vw,36px);font-weight:700;text-align:center;margin-bottom:16px;color:#eef;}
+.section-title span{color:var(--cyan);}
+.section-sub{text-align:center;color:#aaccee;font-size:13px;max-width:600px;margin:0 auto 60px;line-height:1.8;}
+
+/* PRODUITS */
+.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;margin-top:20px;}
+.product-card{background:var(--bg2);border:1px solid var(--cyan)22;padding:32px;position:relative;overflow:hidden;transition:.3s;}
+.product-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);}
+.product-card:hover{border-color:var(--cyan)55;transform:translateY(-4px);box-shadow:0 20px 40px var(--cyan)11;}
+.product-icon{font-size:36px;margin-bottom:16px;}
+.product-tag{font-size:8px;letter-spacing:3px;color:var(--green);margin-bottom:8px;}
+.product-name{font-family:'Orbitron',monospace;font-size:16px;font-weight:700;margin-bottom:12px;color:#eef;}
+.product-desc{font-size:12px;color:#aaccee;line-height:1.8;margin-bottom:20px;}
+.product-features{list-style:none;margin-bottom:24px;}
+.product-features li{font-size:11px;color:#aaccee;padding:4px 0;display:flex;align-items:center;gap:8px;}
+.product-features li::before{content:'▸';color:var(--cyan);}
+.product-price{display:flex;align-items:baseline;gap:8px;margin-bottom:20px;}
+.price-old{font-size:14px;color:var(--cyan)44;text-decoration:line-through;}
+.price-new{font-family:'Orbitron',monospace;font-size:28px;font-weight:900;color:var(--cyan);}
+.price-period{font-size:11px;color:var(--cyan)66;}
+.product-btn{width:100%;padding:12px;background:linear-gradient(135deg,var(--bg3),#003355);border:1px solid var(--cyan)44;color:var(--cyan);font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:2px;cursor:pointer;transition:.3s;}
+.product-btn:hover{background:var(--cyan)22;border-color:var(--cyan);box-shadow:0 0 20px var(--cyan)22;}
+.badge-hot{position:absolute;top:16px;right:16px;background:var(--red)22;border:1px solid var(--red)55;color:var(--red);font-size:8px;letter-spacing:2px;padding:3px 8px;}
+.badge-new{position:absolute;top:16px;right:16px;background:var(--green)22;border:1px solid var(--green)55;color:var(--green);font-size:8px;letter-spacing:2px;padding:3px 8px;}
+
+/* POURQUOI */
+.why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;}
+.why-card{background:var(--bg2);border:1px solid var(--cyan)18;padding:24px;text-align:center;}
+.why-icon{font-size:28px;margin-bottom:12px;}
+.why-title{font-family:'Orbitron',monospace;font-size:12px;color:var(--cyan);margin-bottom:8px;letter-spacing:2px;}
+.why-desc{font-size:11px;color:#aaccee;line-height:1.7;}
+
+/* DEMO */
+.demo-terminal{background:var(--bg2);border:1px solid var(--cyan)33;padding:24px;max-width:700px;margin:0 auto;position:relative;}
+.terminal-bar{display:flex;gap:6px;margin-bottom:20px;}
+.t-dot{width:10px;height:10px;border-radius:50%;}
+.terminal-line{font-size:12px;line-height:2;color:#aaccee;}
+.terminal-line .prompt{color:var(--cyan);}
+.terminal-line .cmd{color:#eef;}
+.terminal-line .res{color:var(--green);}
+.terminal-line .res2{color:var(--orange);}
+.cursor{display:inline-block;width:8px;height:14px;background:var(--cyan);animation:blink .8s infinite;vertical-align:middle;}
+
+/* PLATEFORMES */
+.platforms{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;}
+.platform{background:var(--bg2);border:1px solid var(--cyan)22;padding:16px 24px;display:flex;align-items:center;gap:12px;font-size:12px;color:#aaccee;transition:.2s;}
+.platform:hover{border-color:var(--cyan)55;color:var(--cyan);}
+.platform-icon{font-size:20px;}
+
+/* PLAN */
+.plan-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;}
+.plan-step{background:var(--bg2);border:1px solid var(--cyan)18;padding:24px;position:relative;}
+.step-num{font-family:'Orbitron',monospace;font-size:36px;font-weight:900;color:var(--cyan)18;position:absolute;top:16px;right:16px;}
+.step-day{font-size:9px;letter-spacing:3px;color:var(--orange);margin-bottom:8px;}
+.step-title{font-size:13px;color:#eef;margin-bottom:8px;font-weight:bold;}
+.step-desc{font-size:11px;color:#aaccee;line-height:1.7;}
+.step-revenue{font-family:'Orbitron',monospace;font-size:14px;color:var(--green);margin-top:12px;}
+
+/* CTA FINAL */
+.cta-section{background:linear-gradient(135deg,var(--bg2),var(--bg3));border-top:1px solid var(--cyan)22;border-bottom:1px solid var(--cyan)22;text-align:center;padding:80px 20px;}
+.cta-title{font-family:'Orbitron',monospace;font-size:clamp(20px,4vw,40px);font-weight:900;margin-bottom:20px;}
+.cta-title span{color:var(--cyan);}
+.cta-sub{color:#aaccee;font-size:13px;max-width:500px;margin:0 auto 40px;line-height:1.8;}
+
+/* FOOTER */
+footer{padding:40px 20px;text-align:center;border-top:1px solid var(--cyan)18;font-size:10px;color:var(--cyan)44;letter-spacing:2px;}
+
+/* CORNER */
+.corner{position:absolute;width:16px;height:16px;}
+.corner-tl{top:0;left:0;border-top:1px solid var(--cyan);border-left:1px solid var(--cyan);}
+.corner-br{bottom:0;right:0;border-bottom:1px solid var(--cyan);border-right:1px solid var(--cyan);}
+
+/* DIVIDER */
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--cyan)33,transparent);margin:0;}
+</style>
+</head>
+<body>
+
+<svg class="hexbg"><defs><pattern id="h" x="0" y="0" width="56" height="48" patternUnits="userSpaceOnUse"><polygon points="28,2 54,16 54,44 28,58 2,44 2,16" fill="none" stroke="#00d4ff" stroke-width=".8"/></pattern></defs><rect width="100%" height="100%" fill="url(#h)"/></svg>
+<div class="scanline"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">J.A.R.V.I.S</div>
+  <div class="nav-links">
+    <a href="#produits">Produits</a>
+    <a href="#demo">Démo</a>
+    <a href="#plan">Plan revenus</a>
+  </div>
+  <a href="#produits" class="nav-cta">ACHETER MAINTENANT</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-glow"></div>
+  <div class="arc" style="animation:float 3s ease-in-out infinite">
+    <div class="arc-ring arc-r1"></div>
+    <div class="arc-ring arc-r2"></div>
+    <div class="arc-ring arc-r3"></div>
+    <div class="arc-ring arc-r4"></div>
+    <div class="arc-core"><div class="arc-dot"></div></div>
+  </div>
+  <div class="hero-badge">STARK INDUSTRIES · IA AUTONOME · GÉNÉRATION DE REVENUS</div>
+  <h1 class="hero-title">Ton propre <span>JARVIS</span><br>qui génère des revenus</h1>
+  <p class="hero-sub">Un assistant IA qui contrôle ton PC, automatise ton affiliation Amazon, et travaille pendant que tu dors. Système complet prêt à l'emploi.</p>
+  <div class="hero-btns">
+    <a href="#produits" class="btn-primary">▶ VOIR LES OFFRES</a>
+    <a href="#demo" class="btn-secondary">◎ VOIR LA DÉMO</a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">212</div><div class="stat-label">WORKFLOWS N8N</div></div>
+    <div class="stat"><div class="stat-num">100%</div><div class="stat-label">AUTOMATISÉ</div></div>
+    <div class="stat"><div class="stat-num">0€</div><div class="stat-label">ABONNEMENT</div></div>
+    <div class="stat"><div class="stat-num">24/7</div><div class="stat-label">ACTIF</div></div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- PRODUITS -->
+<section id="produits">
+  <div class="container">
+    <div class="section-tag">CE QU'ON VEND</div>
+    <h2 class="section-title">3 produits <span>prêts à l'emploi</span></h2>
+    <p class="section-sub">Tout a été construit et testé. Tu achètes, tu installes, ça tourne tout seul.</p>
+
+    <div class="products">
+
+      <!-- PRODUIT 1 -->
+      <div class="product-card">
+        <div class="corner corner-tl"></div>
+        <div class="corner corner-br"></div>
+        <div class="badge-hot">🔥 BEST SELLER</div>
+        <div class="product-icon">🤖</div>
+        <div class="product-tag">ASSISTANT IA PERSONNEL</div>
+        <div class="product-name">JARVIS Starter</div>
+        <div class="product-desc">L'interface IA style Iron Man qui contrôle ton PC Windows. Tu lui parles en français, il exécute.</div>
+        <ul class="product-features">
+          <li>Interface HUD animée style Iron Man</li>
+          <li>Commandes vocales en français</li>
+          <li>Contrôle fichiers, bureau, scripts</li>
+          <li>Fonctionne avec Groq (100% gratuit)</li>
+          <li>Démarrage automatique Windows</li>
+          <li>Guide d'installation complet</li>
+        </ul>
+        <div class="product-price">
+          <span class="price-old">97€</span>
+          <span class="price-new">47€</span>
+          <span class="price-period">paiement unique</span>
+        </div>
+        <button class="product-btn" onclick="window.open('https://gumroad.com','_blank')">▶ ACHETER — 47€</button>
+      </div>
+
+      <!-- PRODUIT 2 -->
+      <div class="product-card" style="border-color:var(--cyan)44;">
+        <div class="corner corner-tl"></div>
+        <div class="corner corner-br"></div>
+        <div class="badge-new">⭐ RECOMMANDÉ</div>
+        <div class="product-icon">💰</div>
+        <div class="product-tag">SYSTÈME AFFILIATION AMAZON</div>
+        <div class="product-name">AffilMax Complet</div>
+        <div class="product-desc">212 workflows n8n pour générer du contenu Amazon en automatique et le publier sur tes blogs.</div>
+        <ul class="product-features">
+          <li>212 workflows n8n prêts à importer</li>
+          <li>Génération articles IA automatique</li>
+          <li>Publication Blogger automatisée</li>
+          <li>Alertes Telegram en temps réel</li>
+          <li>Fiches produits, newsletters, comparateurs</li>
+          <li>Compatible Groq, Claude, OpenAI</li>
+        </ul>
+        <div class="product-price">
+          <span class="price-old">297€</span>
+          <span class="price-new">147€</span>
+          <span class="price-period">paiement unique</span>
+        </div>
+        <button class="product-btn" onclick="window.open('https://gumroad.com','_blank')">▶ ACHETER — 147€</button>
+      </div>
+
+      <!-- PRODUIT 3 -->
+      <div class="product-card">
+        <div class="corner corner-tl"></div>
+        <div class="corner corner-br"></div>
+        <div class="product-icon">🚀</div>
+        <div class="product-tag">PACK COMPLET</div>
+        <div class="product-name">JARVIS + AffilMax BUNDLE</div>
+        <div class="product-desc">Tout ce qu'il faut pour avoir un assistant IA + un système de revenus passifs qui tourne 24h/24.</div>
+        <ul class="product-features">
+          <li>✅ JARVIS Starter (47€)</li>
+          <li>✅ AffilMax Complet (147€)</li>
+          <li>✅ 1h de support installation</li>
+          <li>✅ Mises à jour à vie</li>
+          <li>✅ Accès communauté Discord</li>
+          <li>✅ Bonus : 50 prompts revenus</li>
+        </ul>
+        <div class="product-price">
+          <span class="price-old">494€</span>
+          <span class="price-new">197€</span>
+          <span class="price-period">paiement unique</span>
+        </div>
+        <button class="product-btn" style="border-color:var(--cyan);background:var(--cyan)22;" onclick="window.open('https://gumroad.com','_blank')">⭐ ACHETER LE BUNDLE — 197€</button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- DEMO -->
+<section id="demo">
+  <div class="container">
+    <div class="section-tag">EN ACTION</div>
+    <h2 class="section-title">Tu lui parles, <span>il execute</span></h2>
+    <p class="section-sub">Exemples réels de ce que JARVIS + AffilMax peuvent faire pour toi aujourd'hui.</p>
+
+    <div class="demo-terminal">
+      <div class="corner corner-tl"></div>
+      <div class="corner corner-br"></div>
+      <div class="terminal-bar">
+        <div class="t-dot" style="background:#ff5f57"></div>
+        <div class="t-dot" style="background:#ffbd2e"></div>
+        <div class="t-dot" style="background:#28c840"></div>
+        <span style="font-size:10px;color:#00d4ff66;margin-left:8px">J.A.R.V.I.S — Terminal</span>
+      </div>
+      <div class="terminal-line"><span class="prompt">> </span><span class="cmd">Range mon bureau et classe les fichiers par type</span></div>
+      <div class="terminal-line" style="color:#00d4ff88">  ● Analyse du bureau en cours...</div>
+      <div class="terminal-line"><span class="res">  ✓ 47 fichiers triés en 4 secondes. Dossiers créés : PDF, Images, Vidéos, Documents</span></div>
+      <br>
+      <div class="terminal-line"><span class="prompt">> </span><span class="cmd">Lance AffilMax et génère 5 articles Amazon sur les aspirateurs robots</span></div>
+      <div class="terminal-line" style="color:#00d4ff88">  ● Connexion n8n Render... ● Groq IA activé... ● Génération en cours...</div>
+      <div class="terminal-line"><span class="res">  ✓ 5 articles générés et publiés sur aksguet.blogspot.com</span></div>
+      <div class="terminal-line"><span class="res2">  → Tag Amazon: confortbure07-21 inséré dans 23 liens</span></div>
+      <br>
+      <div class="terminal-line"><span class="prompt">> </span><span class="cmd">Donne-moi mon briefing revenus du matin</span></div>
+      <div class="terminal-line"><span class="res">  ✓ 3 articles publiés hier · 127 clics Amazon · Estimation commission: 8-12€</span></div>
+      <div class="terminal-line"><span class="res2">  → Action prioritaire : publier dans la niche "cafetières connectées" (forte demande)</span></div>
+      <br>
+      <div class="terminal-line"><span class="prompt">> </span><span class="cursor"></span></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- POURQUOI -->
+<section>
+  <div class="container">
+    <div class="section-tag">AVANTAGES</div>
+    <h2 class="section-title">Pourquoi c'est <span>différent</span></h2>
+    <div class="why-grid" style="margin-top:40px">
+      <div class="why-card">
+        <div class="why-icon">🆓</div>
+        <div class="why-title">100% GRATUIT À FAIRE TOURNER</div>
+        <div class="why-desc">Utilise Groq (gratuit), n8n self-hosted (gratuit), Blogger (gratuit). Zéro abonnement mensuel.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🇫🇷</div>
+        <div class="why-title">TOUT EN FRANÇAIS</div>
+        <div class="why-desc">JARVIS comprend et répond en français. Les workflows sont configurés pour le marché français.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">⚡</div>
+        <div class="why-title">OPÉRATIONNEL EN 1H</div>
+        <div class="why-desc">Guide pas à pas inclus. Installation complète en moins d'une heure, même sans compétences tech.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🤖</div>
+        <div class="why-title">VRAIMENT AUTONOME</div>
+        <div class="why-desc">JARVIS se lance au démarrage Windows et AffilMax publie du contenu même quand tu dors.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">📈</div>
+        <div class="why-title">TESTÉ ET VALIDÉ</div>
+        <div class="why-desc">Système utilisé activement. 212 workflows réels, chaîne complète Groq → Blogger → Telegram validée.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🔧</div>
+        <div class="why-title">PERSONNALISABLE</div>
+        <div class="why-desc">Tout est modifiable. Ajoute tes niches, ton tag Amazon, tes blogs. Le code est entièrement ouvert.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PLAN REVENUS -->
+<section id="plan">
+  <div class="container">
+    <div class="section-tag">ROADMAP</div>
+    <h2 class="section-title">Ton plan <span>revenus réaliste</span></h2>
+    <p class="section-sub">Ce que tu peux attendre avec AffilMax si tu l'utilises sérieusement.</p>
+    <div class="plan-steps">
+      <div class="plan-step">
+        <div class="step-num">1</div>
+        <div class="step-day">SEMAINE 1-2</div>
+        <div class="step-title">Installation & Configuration</div>
+        <div class="step-desc">JARVIS installé, AffilMax configuré, premiers articles publiés sur ton blog.</div>
+        <div class="step-revenue">0€ — mise en place</div>
+      </div>
+      <div class="plan-step">
+        <div class="step-num">2</div>
+        <div class="step-day">MOIS 1-2</div>
+        <div class="step-title">Indexation Google</div>
+        <div class="step-desc">50-100 articles publiés automatiquement. Google commence à indexer ton contenu.</div>
+        <div class="step-revenue">10-50€/mois</div>
+      </div>
+      <div class="plan-step">
+        <div class="step-num">3</div>
+        <div class="step-day">MOIS 3-6</div>
+        <div class="step-title">Trafic & Commissions</div>
+        <div class="step-desc">200-500 articles. Clics Amazon réguliers. Commissions qui s'accumulent chaque semaine.</div>
+        <div class="step-revenue">100-400€/mois</div>
+      </div>
+      <div class="plan-step">
+        <div class="step-num">4</div>
+        <div class="step-day">MOIS 6-12</div>
+        <div class="step-title">Revenus Passifs Stables</div>
+        <div class="step-desc">1000+ articles. Plusieurs niches actives. Le système tourne sans intervention quotidienne.</div>
+        <div class="step-revenue">500-2000€/mois</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PLATEFORMES -->
+<section>
+  <div class="container">
+    <div class="section-tag">OÙ VENDRE</div>
+    <h2 class="section-title">Disponible sur ces <span>plateformes</span></h2>
+    <div class="platforms" style="margin-top:40px">
+      <div class="platform"><span class="platform-icon">🟢</span> Gumroad</div>
+      <div class="platform"><span class="platform-icon">🔵</span> Malt.fr</div>
+      <div class="platform"><span class="platform-icon">🟠</span> Fiverr</div>
+      <div class="platform"><span class="platform-icon">🔷</span> LinkedIn</div>
+      <div class="platform"><span class="platform-icon">⚫</span> CodeCanyon</div>
+      <div class="platform"><span class="platform-icon">🟣</span> Etsy Digital</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<div class="cta-section">
+  <h2 class="cta-title">Prêt à lancer<br>ton <span>système JARVIS</span> ?</h2>
+  <p class="cta-sub">Rejoins ceux qui ont automatisé leur revenu passif avec AffilMax. Installation en 1 heure, revenus en 3 mois.</p>
+  <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+    <a href="#produits" class="btn-primary" style="font-size:13px;padding:16px 40px">⭐ VOIR LES OFFRES</a>
+    <a href="mailto:contact@jarvis-affilmax.fr" class="btn-secondary">✉ NOUS CONTACTER</a>
+  </div>
+  <div style="margin-top:30px;font-size:10px;color:var(--cyan)44;letter-spacing:2px">PAIEMENT SÉCURISÉ · LIVRAISON IMMÉDIATE · SUPPORT INCLUS</div>
+</div>
+
+<footer>
+  <div style="font-family:'Orbitron',monospace;font-size:14px;color:var(--cyan)66;letter-spacing:4px;margin-bottom:8px">J.A.R.V.I.S + AFFILMAX</div>
+  © 2025 · Système d'automatisation IA · Fait en France 🇫🇷
+</footer>
+
+</body>
+</html>
